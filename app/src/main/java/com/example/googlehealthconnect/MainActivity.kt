@@ -7,7 +7,11 @@ import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
+import com.example.googlehealthconnect.navigation.AppNavHost
 import com.example.googlehealthconnect.screens.App
 import com.example.googlehealthconnect.ui.theme.GoogleHealthConnectTheme
 
@@ -18,7 +22,8 @@ class MainActivity : ComponentActivity() {
         setContent {
             GoogleHealthConnectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    App(
+                    AppNavHost(
+                        navController = rememberNavController(),
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
@@ -26,4 +31,3 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
-
