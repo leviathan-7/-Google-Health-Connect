@@ -57,4 +57,5 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.health.connect:connect-client:1.1.0-alpha10")
+    implementation("com.google.accompanist:accompanist-permissions:0.20.0")
 }
