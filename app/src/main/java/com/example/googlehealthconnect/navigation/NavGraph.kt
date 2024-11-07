@@ -14,8 +14,8 @@ import com.example.googlehealthconnect.screens.Settings
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    repo: HealthRepo
 ) {
-    val repo = HealthRepo(LocalContext.current)
     NavHost(
         navController = navController,
         startDestination = "Start",

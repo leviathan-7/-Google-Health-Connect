@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableLongStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -27,6 +28,8 @@ import com.example.googlehealthconnect.data.DatePick
 import com.example.googlehealthconnect.navigation.TopAppBar
 import kotlinx.coroutines.launch
 import java.time.Instant
+import java.time.Clock
+import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -54,7 +57,8 @@ fun Settings(
             onValueChange = {newText -> newStep.value = newText},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        var time = remember {mutableStateOf(0L)}
+        val clock: Clock = Clock.system(ZoneId.systemDefault())
+        var time = remember { mutableLongStateOf(clock.millis() / 1000) }
         Row(
             verticalAlignment = Alignment.CenterVertically
         ){
@@ -65,7 +69,7 @@ fun Settings(
             coroutineScope.launch {
                 repo.insertSteps(
                     count = newStep.value,
-                    instant = Instant.ofEpochSecond(time.value)
+                    instant = Instant.ofEpochSecond(time.longValue)
                 )
                 navigateBack()
             }

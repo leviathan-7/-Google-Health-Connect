@@ -15,7 +15,6 @@ import kotlin.text.toLong
 
 class HealthRepo(context: Context) {
     private val healthConnectClient = HealthConnectClient.getOrCreate(context)
-    private val clock: Clock = Clock.system(ZoneId.systemDefault())
 
     suspend fun insertSteps(
         count: String,

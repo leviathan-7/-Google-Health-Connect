@@ -9,8 +9,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import com.example.googlehealthconnect.data.HealthRepo
 import com.example.googlehealthconnect.navigation.AppNavHost
 import com.example.googlehealthconnect.screens.App
 import com.example.googlehealthconnect.ui.theme.GoogleHealthConnectTheme
@@ -20,11 +22,13 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
+            val repo = HealthRepo(LocalContext.current)
             GoogleHealthConnectTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     AppNavHost(
                         navController = rememberNavController(),
-                        modifier = Modifier.padding(innerPadding)
+                        modifier = Modifier.padding(innerPadding),
+                        repo = repo
                     )
                 }
             }
