@@ -1,6 +1,7 @@
 package com.example.googlehealthconnect.data
 
 import android.content.Context
+import android.util.Log
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.WeightRecord
@@ -16,23 +17,25 @@ class HealthRepo(context: Context) {
     private val healthConnectClient = HealthConnectClient.getOrCreate(context)
     private val clock: Clock = Clock.system(ZoneId.systemDefault())
 
-    suspend fun insertSteps(count: String) {
+    suspend fun insertSteps(
+        count: String,
+        instant: Instant
+    ) {
         try {
             val stepsRecord = StepsRecord(
                 count = count.toLong(),
-                startTime = clock.instant(),
-                endTime = clock.instant(),
+                startTime = instant,
+                endTime = instant,
                 startZoneOffset = null,
                 endZoneOffset = null,
             )
             healthConnectClient.insertRecords(listOf(stepsRecord))
         } catch (e: Exception) {
-            // Run error handling here
+            Log.v("HealthRepo","insertException")
         }
     }
 
     suspend fun readStepsByTimeRange(
-        healthConnectClient: HealthConnectClient,
         startTime: Instant,
         endTime: Instant
     ) : List<StepsRecord>? {
@@ -44,9 +47,9 @@ class HealthRepo(context: Context) {
                         timeRangeFilter = TimeRangeFilter.between(startTime, endTime)
                     )
                 )
-            response.records.get(0).metadata
             return response.records
         } catch (e: Exception) {
+            Log.v("HealthRepo","readException")
             return null
         }
     }
@@ -58,7 +61,7 @@ class HealthRepo(context: Context) {
                 listOf(record.metadata.clientRecordId!!)
             )
         } catch (e: Exception) {
-            // Run error handling here
+            Log.v("HealthRepo","deleteException")
         }
     }
 

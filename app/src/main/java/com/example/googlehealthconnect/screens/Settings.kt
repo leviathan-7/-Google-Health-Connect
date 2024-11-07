@@ -23,8 +23,10 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.sp
 import com.example.googlehealthconnect.data.HealthRepo
 import com.example.googlehealthconnect.R
+import com.example.googlehealthconnect.data.DatePick
 import com.example.googlehealthconnect.navigation.TopAppBar
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -52,9 +54,19 @@ fun Settings(
             onValueChange = {newText -> newStep.value = newText},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
+        var time = remember {mutableStateOf(0L)}
+        Row(
+            verticalAlignment = Alignment.CenterVertically
+        ){
+            Text("Дата ", fontSize = 23.sp)
+            DatePick(time = time)
+        }
         Button(onClick = {
             coroutineScope.launch {
-                repo.insertSteps(newStep.value)
+                repo.insertSteps(
+                    count = newStep.value,
+                    instant = Instant.ofEpochSecond(time.value)
+                )
                 navigateBack()
             }
         },
