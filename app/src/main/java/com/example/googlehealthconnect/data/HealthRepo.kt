@@ -31,7 +31,7 @@ class HealthRepo(context: Context) {
             )
             healthConnectClient.insertRecords(listOf(stepsRecord))
         } catch (e: Exception) {
-            Log.v("HealthRepo","insertException")
+            Log.v("HealthRepo","insertException " + e.message)
         }
     }
 
@@ -49,7 +49,7 @@ class HealthRepo(context: Context) {
                 )
             return response.records
         } catch (e: Exception) {
-            Log.v("HealthRepo","readException")
+            Log.v("HealthRepo","readException " + e.message)
             return null
         }
     }
@@ -61,7 +61,7 @@ class HealthRepo(context: Context) {
                 listOf(record.metadata.clientRecordId!!)
             )
         } catch (e: Exception) {
-            Log.v("HealthRepo","deleteException")
+            Log.v("HealthRepo","deleteException " + e.message)
         }
     }
 
