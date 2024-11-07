@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.googlehealthconnect.data.HealthRepo
+import com.example.googlehealthconnect.data.PERMISSIONS
 import com.example.googlehealthconnect.data.getStates
 import com.google.accompanist.permissions.ExperimentalPermissionsApi
 import com.google.accompanist.permissions.PermissionState
@@ -24,7 +25,7 @@ fun App(
     var permises by permisesState
     permises+= getStates(states)
 
-    if (permises == 4){
+    if (permises == PERMISSIONS.size){
         MainScreen(
             modifier = modifier,
             repo = repo,

@@ -30,10 +30,8 @@ fun MainScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ){
         TopAppBar(
-            title = "Информация"
+            title = "Шагомер"
         )
-
-
         Button(onClick = {
             navigateToSettings()
         },
@@ -42,7 +40,9 @@ fun MainScreen(
                 containerColor = Color(0xffff9115)
             )
         ){
-            Text("Изменить данные", fontSize = 19.sp)
+            Text("Добавить данные", fontSize = 19.sp)
         }
+
+
     }
 }
