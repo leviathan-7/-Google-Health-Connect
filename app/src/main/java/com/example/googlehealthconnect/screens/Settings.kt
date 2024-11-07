@@ -69,7 +69,8 @@ fun Settings(
             coroutineScope.launch {
                 repo.insertSteps(
                     count = newStep.value,
-                    instant = Instant.ofEpochSecond(time.longValue)
+                    instant0 = Instant.ofEpochSecond(time.longValue),
+                    instant1 = Instant.ofEpochSecond(time.longValue + 1)
                 )
                 navigateBack()
             }

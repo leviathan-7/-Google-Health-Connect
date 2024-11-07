@@ -18,13 +18,14 @@ class HealthRepo(context: Context) {
 
     suspend fun insertSteps(
         count: String,
-        instant: Instant
+        instant0: Instant,
+        instant1: Instant
     ) {
         try {
             val stepsRecord = StepsRecord(
                 count = count.toLong(),
-                startTime = instant,
-                endTime = instant,
+                startTime = instant0,
+                endTime = instant1,
                 startZoneOffset = null,
                 endZoneOffset = null,
             )

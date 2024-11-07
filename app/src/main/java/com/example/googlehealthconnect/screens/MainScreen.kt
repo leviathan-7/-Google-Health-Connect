@@ -73,8 +73,8 @@ fun MainScreen(
         var final = remember {mutableStateOf(4000000000L)}
         coroutineScope.launch {
             var res = repo.readStepsByTimeRange(
-                Instant.ofEpochSecond(start.value),
-                Instant.ofEpochSecond(final.value)
+                startTime = Instant.ofEpochSecond(start.value),
+                endTime = Instant.ofEpochSecond(final.value)
             )
             if (res != null){
                 stepsRecords.value = res
