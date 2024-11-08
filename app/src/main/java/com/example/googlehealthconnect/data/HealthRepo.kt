@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.health.connect.client.HealthConnectClient
 import androidx.health.connect.client.records.StepsRecord
 import androidx.health.connect.client.records.WeightRecord
+import androidx.health.connect.client.request.AggregateRequest
 import androidx.health.connect.client.request.ReadRecordsRequest
 import androidx.health.connect.client.time.TimeRangeFilter
 import androidx.health.connect.client.units.Mass
@@ -36,27 +37,53 @@ class HealthRepo(context: Context) {
     }
 
     suspend fun readStepsByTimeRange(
-        startTime: Instant,
-        endTime: Instant
-    ) : List<StepsRecord>? {
+        start: Long,
+        final: Long
+    ) : List<StepsRecord> {
         try {
             return healthConnectClient.readRecords(
                         ReadRecordsRequest(
                             StepsRecord::class,
-                            timeRangeFilter = TimeRangeFilter.between(startTime, endTime)
+                            timeRangeFilter = TimeRangeFilter.between(
+                                Instant.ofEpochSecond(start),
+                                Instant.ofEpochSecond(final + 1)
+                            )
                         )
                     ).records
         } catch (e: Exception) {
             Log.v("HealthRepo","readException " + e.message)
-            return null
+            return listOf<StepsRecord>()
         }
     }
+
+    suspend fun aggregateSteps(
+        start: Long,
+        final: Long
+    ): Long {
+        try {
+            return healthConnectClient.aggregate(
+                AggregateRequest(
+                    metrics = setOf(StepsRecord.COUNT_TOTAL),
+                    timeRangeFilter = TimeRangeFilter.between(
+                        Instant.ofEpochSecond(start),
+                        Instant.ofEpochSecond(final + 1)
+                    )
+                )
+            )[StepsRecord.COUNT_TOTAL]!!
+        } catch (e: Exception) {
+            Log.v("HealthRepo","aggregateException " + e.message)
+            return 0L
+        }
+    }
+
     suspend fun deleteSteps(record: StepsRecord) {
         try {
             healthConnectClient.deleteRecords(
                 StepsRecord::class,
-                listOf(record.metadata.id),
-                listOf(record.metadata.clientRecordId!!)
+                TimeRangeFilter.between(
+                    record.startTime.minusSeconds(2),
+                    record.endTime.plusSeconds(2)
+                )
             )
         } catch (e: Exception) {
             Log.v("HealthRepo","deleteException " + e.message)

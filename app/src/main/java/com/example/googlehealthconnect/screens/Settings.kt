@@ -29,6 +29,7 @@ import com.example.googlehealthconnect.navigation.TopAppBar
 import kotlinx.coroutines.launch
 import java.time.Instant
 import java.time.Clock
+import java.time.LocalDate
 import java.time.ZoneId
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,8 +58,8 @@ fun Settings(
             onValueChange = {newText -> newStep.value = newText},
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
         )
-        val clock: Clock = Clock.system(ZoneId.systemDefault())
-        var time = remember { mutableLongStateOf(clock.millis() / 1000) }
+        val f = LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toEpochSecond()
+        var time = remember { mutableLongStateOf(f) }
         Row(
             verticalAlignment = Alignment.CenterVertically
         ){
