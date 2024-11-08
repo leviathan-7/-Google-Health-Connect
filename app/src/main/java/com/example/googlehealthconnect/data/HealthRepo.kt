@@ -40,14 +40,12 @@ class HealthRepo(context: Context) {
         endTime: Instant
     ) : List<StepsRecord>? {
         try {
-            val response =
-                healthConnectClient.readRecords(
-                    ReadRecordsRequest(
-                        StepsRecord::class,
-                        timeRangeFilter = TimeRangeFilter.between(startTime, endTime)
-                    )
-                )
-            return response.records
+            return healthConnectClient.readRecords(
+                        ReadRecordsRequest(
+                            StepsRecord::class,
+                            timeRangeFilter = TimeRangeFilter.between(startTime, endTime)
+                        )
+                    ).records
         } catch (e: Exception) {
             Log.v("HealthRepo","readException " + e.message)
             return null
